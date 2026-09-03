@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Login | Green Valley Public School</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#064b37 0%,#0B6E4F 50%,#0a5c42 100%);padding:20px}
+.login-box{background:#fff;border-radius:16px;padding:40px 35px;width:100%;max-width:420px;box-shadow:0 25px 60px rgba(0,0,0,.25)}
+.login-box h1{font-family:Poppins;color:#0B6E4F;font-size:26px;margin-bottom:6px;text-align:center}
+.login-box p{text-align:center;color:#66756e;margin-bottom:25px;font-size:14px}
+.role-tabs{display:flex;gap:8px;margin-bottom:25px}
+.role-tabs button{flex:1;padding:12px;border:2px solid #dfe8e3;background:#f4f8f6;border-radius:10px;font-weight:700;cursor:pointer;transition:.25s;font-size:14px}
+.role-tabs button.active{background:#0B6E4F;color:#fff;border-color:#0B6E4F}
+.login-box label{display:block;font-weight:600;margin-bottom:6px;font-size:13px;color:#18251f}
+.login-box input{width:100%;padding:13px 15px;border:1.5px solid #dfe8e3;border-radius:10px;margin-bottom:18px;font-size:15px;outline:none;transition:.2s}
+.login-box input:focus{border-color:#0B6E4F}
+.login-box .btn{width:100%;padding:14px;font-size:16px;margin-top:5px}
+.error-msg{background:#fee2e2;color:#b91c1c;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:15px;display:none}
+.back-home{display:block;text-align:center;margin-top:20px;color:#0B6E4F;font-weight:600;font-size:14px}
+.login-logo{text-align:center;margin-bottom:15px}
+.login-logo img{height:70px}
+</style>
+</head>
+<body>
+<div class="login-page">
+  <div class="login-box">
+    <div class="login-logo"><img src="images/logo.png" alt="Green Valley Public School"></div>
+    <h1>Staff Login</h1>
+    <p>Admin or Teacher account se login karein</p>
+
+    <div class="role-tabs">
+      <button type="button" class="active" id="adminTab">Admin</button>
+      <button type="button" id="teacherTab">Teacher</button>
+    </div>
+
+    <div class="error-msg" id="errorMsg">Galat Username ya Password</div>
+
+    <form id="loginForm">
+      <label>Username</label>
+      <input type="text" id="username" placeholder="Username" required autocomplete="username">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Password" required autocomplete="current-password">
+      <button class="btn btn-green" type="submit">Login</button>
+    </form>
+
+    <a href="index.html" class="back-home">← Back to Home</a>
+  </div>
+</div>
+
+<script>
+let currentRole = "admin";
+
+document.getElementById("adminTab").addEventListener("click", function(){
+  currentRole = "admin";
+  this.classList.add("active");
+  document.getElementById("teacherTab").classList.remove("active");
+  document.getElementById("errorMsg").style.display = "none";
+});
+
+document.getElementById("teacherTab").addEventListener("click", function(){
+  currentRole = "teacher";
+  this.classList.add("active");
+  document.getElementById("adminTab").classList.remove("active");
+  document.getElementById("errorMsg").style.display = "none";
+});
+
+// Simple credentials (aap badal sakte hain)
+const users = {
+  admin: { username: "admin", password: "admin123", name: "Administrator" },
+  teacher: { username: "teacher", password: "teacher123", name: "Teacher" }
+};
+
+document.getElementById("loginForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  const user = document.getElementById("username").value.trim();
+  const pass = document.getElementById("password").value;
+
+  const account = users[currentRole];
+
+  if(account && user === account.username && pass === account.password){
+    // Login success
+    localStorage.setItem("gvLoggedIn", "true");
+    localStorage.setItem("gvRole", currentRole);
+    localStorage.setItem("gvName", account.name);
+    window.location.href = "index.html";
+  } else {
+    document.getElementById("errorMsg").style.display = "block";
+  }
+});
+</script>
+</body>
+</html>
